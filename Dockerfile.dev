@@ -6,6 +6,6 @@ COPY package.json .
 RUN npm install
 
 COPY . .
-# 81: is copy necessary?
+# 81: is copy necessary? not for local dev, but needed when deploying
 
 CMD ["npm", "run", "start"]

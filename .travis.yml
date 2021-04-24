@@ -1,0 +1,27 @@
+language: generic 
+sudo: required
+services:
+  - docker
+  # need docker cli pre-installed
+
+before_install:
+  - docker build -t ckting0723/docker-react -f Dockerfile.dev .
+  # image tag only used in travis CI
+
+script:
+  # - docker run ckting0723/docker-react npm run test -- --coverage
+  - docker run -e CI=true ckting0723/docker-react npm run test
+
+deploy:
+  provider: elasticbeanstalk
+  region: "us-west-2"
+  app: "docker"
+  env: "Docker-env"
+  bucket_name: "elasticbeanstalk-us-west-2-306476627547"
+  bucket_path: "docker"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key:
+    secure: "$AWS_SECRET_KEY"
+
